@@ -1,4 +1,4 @@
-package forinput
+package forInput
 
 import (
 	"bufio"
@@ -8,7 +8,7 @@ import (
 	"strings"
 )
 
-func inputNum(text string) int {
+func InputNum(text string) int {
 	var num int
 	reader := bufio.NewReader(os.Stdin)
 
