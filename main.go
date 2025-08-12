@@ -1,15 +1,9 @@
 package main
 
 import (
-	"fmt"
-	"os"
+	"github.com/ignratnan/products-management/packages/forMenu"
 )
 
 func main() {
-	_, err := os.ReadFile("test.json")
-	if err != nil {
-		fmt.Println(err)
-		return
-	}
-
+	forMenu.MainMenu()
 }
