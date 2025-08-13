@@ -15,13 +15,13 @@ func InputNum(text string) int {
 	fmt.Print(text)
 	number, err := reader.ReadString('\n')
 	if err != nil {
-		fmt.Printf("Failed to read the number: %w\n", err)
+		fmt.Printf("Failed to read the number: %s\n", err)
 	}
 
 	number = strings.TrimSpace(number)
 	num, err = strconv.Atoi(number)
 	if err != nil {
-		fmt.Printf("Failed to convert the number: %w\n", err)
+		fmt.Printf("Failed to convert the number: %s\n", err)
 	}
 
 	return num
@@ -34,7 +34,7 @@ func InputProduct(text string) string {
 	fmt.Print(text)
 	product, err := reader.ReadString('\n')
 	if err != nil {
-		fmt.Printf("Failed to read the product: %w", err)
+		fmt.Printf("Failed to read the product: %s", err)
 	}
 
 	product = strings.TrimSpace(product)
@@ -49,13 +49,13 @@ func InputPrice(text string) float64 {
 	fmt.Print(text)
 	price, err := reader.ReadString('\n')
 	if err != nil {
-		fmt.Printf("Failed to read the product: %w", err)
+		fmt.Printf("Failed to read the product: %s", err)
 	}
 
 	price = strings.TrimSpace(price)
 	prices, err = strconv.ParseFloat(price, 64)
 	if err != nil {
-		fmt.Printf("Failed to convert the price: %w", err)
+		fmt.Printf("Failed to convert the price: %s", err)
 	}
 
 	return prices

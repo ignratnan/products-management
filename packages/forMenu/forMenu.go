@@ -2,9 +2,14 @@ package forMenu
 
 import (
 	"fmt"
+	"log"
+	"net/http"
 
+	"github.com/ignratnan/products-management/packages/forApi"
 	"github.com/ignratnan/products-management/packages/forCheck"
 	"github.com/ignratnan/products-management/packages/forInput"
+	"github.com/ignratnan/products-management/packages/forJson"
+	"github.com/ignratnan/products-management/packages/forModel"
 )
 
 func MainMenu() {
@@ -16,7 +21,8 @@ func MainMenu() {
 	fmt.Println("2. Show Product")
 	fmt.Println("3. Edit Product")
 	fmt.Println("4. Delete Product")
-	fmt.Println("5. Exit")
+	fmt.Println("5. Run API")
+	fmt.Println("6. Exit")
 	fmt.Println("---")
 	inputMain := forInput.InputNum("Please input the number: ")
 	switch inputMain {
@@ -29,6 +35,8 @@ func MainMenu() {
 	case 4:
 		DeleteProduct()
 	case 5:
+		RunApi()
+	case 6:
 		fmt.Println("Existing the system!")
 	}
 }
@@ -38,10 +46,17 @@ func AddProduct() {
 	fmt.Println("---")
 	fmt.Println("*Add Product")
 	fmt.Println("---")
-	inputProduct := forInput.InputProduct("Please input the product name: ")
-	inputPrices := forInput.InputPrice("Please input the product price: ")
-	inputID := forCheck.NewID()
-
+	var newProduct forModel.Product
+	forJson.ReadJson(forModel.FolderPath, forModel.FileName, &forModel.Products)
+	newProduct.Name = forInput.InputProduct("Please input the product name: ")
+	newProduct.Price = forInput.InputPrice("Please input the product price: ")
+	newProduct.ID = forCheck.NewID()
+	forModel.Products = append(forModel.Products, newProduct)
+	forJson.WriteJson(forModel.FolderPath, forModel.FileName, forModel.Products)
+	fmt.Println("---")
+	fmt.Println("The new product successfully added.")
+	forInput.InputProduct("Click enter to back to Main Menu!")
+	MainMenu()
 }
 
 func ShowProduct() {
@@ -49,6 +64,12 @@ func ShowProduct() {
 	fmt.Println("---")
 	fmt.Println("*Show Product")
 	fmt.Println("---")
+	forJson.ReadJson(forModel.FolderPath, forModel.FileName, &forModel.Products)
+	println(forModel.Products)
+	forJson.ShowData()
+	fmt.Println("---")
+	forInput.InputProduct("Click enter to back to Main Menu!")
+	MainMenu()
 }
 
 func EditProduct() {
@@ -56,6 +77,15 @@ func EditProduct() {
 	fmt.Println("---")
 	fmt.Println("*Edit Product")
 	fmt.Println("---")
+
+	forJson.ReadJson(forModel.FolderPath, forModel.FileName, &forModel.Products)
+	forJson.ShowData()
+	fmt.Println("---")
+	forJson.EditData()
+	fmt.Println("---")
+	fmt.Println("The product successfully edited.")
+	forInput.InputProduct("Click enter to back to Main Menu!")
+	MainMenu()
 }
 
 func DeleteProduct() {
@@ -63,4 +93,17 @@ func DeleteProduct() {
 	fmt.Println("---")
 	fmt.Println("*Delete Product")
 	fmt.Println("---")
+	forJson.DeleteData()
+	fmt.Println("---")
+	fmt.Println("The product successfully edited.")
+	forInput.InputProduct("Click enter to back to Main Menu!")
+	MainMenu()
+}
+
+func RunApi() {
+	http.HandleFunc("/products", forApi.ProductsHandler)
+	http.HandleFunc("/products/", forApi.ProductHandler)
+
+	fmt.Println("Server is running on http://localhost:8080")
+	log.Fatal(http.ListenAndServe(":8080", nil))
 }
