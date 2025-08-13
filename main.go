@@ -8,6 +8,6 @@ import (
 )
 
 func main() {
-	os.MkdirAll(forModel.FolderPath, 0755)
-	forMenu.MainMenu()
+	os.MkdirAll(forModel.FolderPath, 0755) //Create new folder "Files"
+	forMenu.MainMenu()                     //Show main menu
 }
